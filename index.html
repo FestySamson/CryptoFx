@@ -4,387 +4,766 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ian Somerhalder News - Legal Crisis Coverage</title>
-    <script src="https://cdn.tailwindcss.com">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        'serif': ['Georgia', 'serif'],
-                        'sans': ['Inter', 'sans-serif']
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.8s ease-in-out',
-                        'slide-up': 'slideUp 0.6s ease-out',
-                        'pulse-slow': 'pulse 3s infinite'
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #581c87 50%, #0f172a 100%);
+            color: white;
+            line-height: 1.6;
+            min-height: 100vh;
         }
-        .gradient-text {
-            background: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .glass-effect {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
         }
-        .article-shadow {
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content */
+        .article-page {
+            padding-top: 5rem;
+            min-height: 100vh;
+        }
+
+        .article-page.hidden {
+            display: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .breaking-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .pulse-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            background: #f87171;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            color: #d1d5db;
+            font-size: 0.875rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meta-dot {
+            width: 0.25rem;
+            height: 0.25rem;
+            background: #a855f7;
+            border-radius: 50%;
+        }
+
+        /* Featured Image */
+        .featured-image {
+            margin-bottom: 3rem;
+            animation: slideInUp 0.6s ease-out 0.2s both;
+        }
+
+        .image-container {
+            position: relative;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 2rem 1.5rem 1.5rem;
+            color: white;
+        }
+
+        .image-caption {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        /* Article Content */
+        .article-content {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            border-radius: 1rem;
+            padding: 2rem;
+            animation: slideInUp 0.6s ease-out 0.4s both;
+        }
+
+        .article-content p {
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+            color: #e2e8f0;
+        }
+
+        .lead-paragraph {
+            font-size: 1.25rem;
+            color: #f1f5f9;
+            font-weight: 300;
+        }
+
+        /* Quote Blocks */
+        .quote-block {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+            border-left: 4px solid #8b5cf6;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .quote-text {
+            font-size: 1.125rem;
+            font-style: italic;
+            color: #e0e7ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .quote-author {
+            font-size: 0.875rem;
+            color: #c4b5fd;
+        }
+
+        /* Section Headers */
+        .section-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 2rem 0 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Info Cards */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .info-card {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .info-card.red {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .info-card.red h4 {
+            color: #fca5a5;
+        }
+
+        .info-card.yellow {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .info-card.yellow h4 {
+            color: #fcd34d;
+        }
+
+        .info-card.blue {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .info-card.blue h4 {
+            color: #93c5fd;
+        }
+
+        .info-card.purple {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .info-card.purple h4 {
+            color: #c4b5fd;
+        }
+
+        .info-card.green {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .info-card.green h4 {
+            color: #86efac;
+        }
+
+        .info-card h4 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card p {
+            font-size: 0.875rem;
+            color: #d1d5db;
+            margin: 0;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin: 2rem 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+
+        .timeline-date {
+            width: 5rem;
+            flex-shrink: 0;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #c4b5fd;
+        }
+
+        .timeline-content {
+            color: #d1d5db;
+        }
+
+        /* Support Breakdown */
+        .support-breakdown {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .support-breakdown h3 {
+            color: #fca5a5;
+            margin-bottom: 1.5rem;
+        }
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .support-item {
+            background: rgba(30, 41, 59, 0.5);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+
+        .support-amount {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .support-label {
+            color: #fca5a5;
+        }
+
+        .support-total {
+            border-top: 1px solid rgba(239, 68, 68, 0.3);
+            padding-top: 1.5rem;
+            text-align: center;
+        }
+
+        .support-total .amount {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #f87171;
+        }
+
+        .support-total .label {
+            color: #fca5a5;
+        }
+
+        /* Ultimatum Section */
+        .ultimatum {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(251, 146, 60, 0.2));
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .ultimatum-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .ultimatum-option {
+            text-align: center;
+        }
+
+        .ultimatum-option h4 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #f87171;
+            margin-bottom: 1rem;
+        }
+
+        .ultimatum-details {
+            color: #d1d5db;
+        }
+
+        /* Conclusion Box */
+        .conclusion {
+            background: rgba(71, 85, 105, 0.5);
+            border: 1px solid rgba(100, 116, 139, 1);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .conclusion h4 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .conclusion p {
+            color: #d1d5db;
+            margin: 0;
+        }
+
+        .conclusion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .outcome-card {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid;
+        }
+
+        .outcome-card.positive {
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.3);
+        }
+
+        .outcome-card.positive .outcome-title {
+            color: #86efac;
+        }
+
+        .outcome-card.negative {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .outcome-card.negative .outcome-title {
+            color: #fca5a5;
+        }
+
+        .outcome-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .outcome-text {
+            font-size: 0.875rem;
+            color: #d1d5db;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(71, 85, 105, 0.5);
+            padding: 2rem 0;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 0.75rem;
+            }
+
+            .nav-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .article-page {
+                padding-top: 7rem;
+            }
+
+            .article-content {
+                padding: 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ultimatum-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .timeline-date {
+                width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .article-content {
+                padding: 1rem;
+            }
+
+            .quote-block {
+                padding: 1rem;
+            }
+
+            .support-breakdown {
+                padding: 1rem;
+            }
+
+            .ultimatum {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white">
+<body>
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass-effect">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold gradient-text">Entertainment Legal News</div>
-            <div class="flex space-x-6">
-                <button onclick="showArticle(1)" id="nav-article1" class="nav-btn px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/20 bg-white/10">Management Crisis</button>
-                <button onclick="showArticle(2)" id="nav-article2" class="nav-btn px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/20">Asset Freeze</button>
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">Entertainment Legal News</div>
+                <div class="nav-buttons">
+                    <button onclick="showArticle(1)" id="nav-article1" class="nav-btn active">Management Crisis</button>
+                    <button onclick="showArticle(2)" id="nav-article2" class="nav-btn">Asset Freeze</button>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Article 1: Management Crisis -->
-    <div id="article1" class="article-page min-h-screen pt-20">
-        <div class="container mx-auto px-4 py-8 max-w-4xl">
+    <div id="article1" class="article-page">
+        <div class="container">
             <!-- Hero Section -->
-            <div class="text-center mb-12 animate-fade-in">
-                <div class="inline-flex items-center gap-2 bg-red-500/20 text-red-300 px-4 py-2 rounded-full mb-6">
-                    <span class="w-2 h-2 bg-red-400 rounded-full animate-pulse-slow"></span>
+            <div class="hero">
+                <div class="breaking-badge">
+                    <span class="pulse-dot"></span>
                     Breaking News
                 </div>
-                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                <h1>
                     Legal Turmoil: Ian Somerhalder 
                     <span class="gradient-text">Cuts Ties with Management</span>
                     Amid Court Disputes
                 </h1>
-                <div class="flex flex-wrap justify-center gap-6 text-gray-300 text-sm">
-                    <span class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-purple-400 rounded-full"></span>
+                <div class="hero-meta">
+                    <span class="meta-item">
+                        <span class="meta-dot"></span>
                         Los Angeles, CA
                     </span>
-                    <span class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-purple-400 rounded-full"></span>
-                        8th September 2025
+                    <span class="meta-item">
+                        <span class="meta-dot"></span>
+                       14th September 2025
                     </span>
-                    <span class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-purple-400 rounded-full"></span>
+                    <span class="meta-item">
+                        <span class="meta-dot"></span>
                         Entertainment Legal
                     </span>
                 </div>
             </div>
 
             <!-- Featured Image -->
-            <div class="mb-12 animate-slide-up">
-                <div class="relative rounded-2xl overflow-hidden article-shadow">
-                    <img src="./IMG2.jpg"alt="Ian Somerhalder at formal event" class="w-full h-96 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 text-white">
-                        <p class="text-sm opacity-80">Ian Somerhalder at a recent Hollywood event</p>
+            <div class="featured-image">
+                <div class="image-container">
+                    <img src="./IMG2.JPG" alt="Ian Somerhalder at formal event">
+                    <div class="image-overlay">
+                        <p class="image-caption">Ian Somerhalder at a recent Hollywood event</p>
                     </div>
                 </div>
             </div>
 
             <!-- Article Content -->
-            <div class="prose prose-lg prose-invert max-w-none animate-slide-up">
-                <div class="bg-slate-800/50 rounded-2xl p-8 backdrop-blur-sm border border-slate-700/50 mb-8">
-                    <p class="text-xl leading-relaxed mb-6 text-gray-200">
-                        Hollywood actor Ian Somerhalder, best known for his iconic role on The Vampire Diaries, has officially severed ties with his longtime management team following a string of legal disputes that have cast a shadow over his career.
+            <div class="article-content">
+                <p class="lead-paragraph">
+                    Hollywood actor Ian Somerhalder, best known for his iconic role on The Vampire Diaries, has officially severed ties with his longtime management team following a string of legal disputes that have cast a shadow over his career.
+                </p>
+                
+                <p>
+                    The decision comes at a critical juncture, as the actor continues to battle multiple lawsuits and contractual disagreements that have raised questions about both his professional representation and financial stability.
+                </p>
+
+                <div class="quote-block">
+                    <p class="quote-text">
+                        "There was growing tension about how his legal issues were being managed. He felt abandoned at a time when he needed the strongest representation possible."
                     </p>
-                    
-                    <p class="text-lg leading-relaxed mb-6 text-gray-300">
-                        The decision comes at a critical juncture, as the actor continues to battle multiple lawsuits and contractual disagreements that have raised questions about both his professional representation and financial stability.
-                    </p>
+                    <p class="quote-author">— Industry source, speaking anonymously</p>
+                </div>
 
-                    <div class="bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-xl p-6 my-8 border-l-4 border-purple-400">
-                        <blockquote class="text-lg italic text-purple-200">
-                            "There was growing tension about how his legal issues were being managed. He felt abandoned at a time when he needed the strongest representation possible."
-                        </blockquote>
-                        <cite class="text-sm text-purple-300 mt-2 block">— Industry source, speaking anonymously</cite>
+                <h3 class="section-header">Legal Challenges Overview</h3>
+                <div class="info-grid">
+                    <div class="info-card red">
+                        <h4>Contractual Breach Disputes</h4>
+                        <p>Linked to entertainment projects and business ventures</p>
                     </div>
-
-                    <h3 class="text-2xl font-bold mb-4 gradient-text">Legal Challenges Overview</h3>
-                    <div class="grid md:grid-cols-3 gap-4 mb-8">
-                        <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4">
-                            <h4 class="font-semibold text-red-300 mb-2">Contractual Breach Disputes</h4>
-                            <p class="text-sm text-gray-300">Linked to entertainment projects and business ventures</p>
-                        </div>
-                        <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4">
-                            <h4 class="font-semibold text-yellow-300 mb-2">Investment Conflicts</h4>
-                            <p class="text-sm text-gray-300">Disputes over Brother's Bond Bourbon equity arrangements</p>
-                        </div>
-                        <div class="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
-                            <h4 class="font-semibold text-blue-300 mb-2">Family Court Proceedings</h4>
-                            <p class="text-sm text-gray-300">Child support enforcement case development</p>
-                        </div>
+                    <div class="info-card yellow">
+                        <h4>Investment Conflicts</h4>
+                        <p>Disputes over Brother's Bond Bourbon equity arrangements</p>
                     </div>
-
-                    <h3 class="text-2xl font-bold mb-4 gradient-text">Industry Impact</h3>
-                    <p class="text-lg leading-relaxed mb-6 text-gray-300">
-                        By stepping away from his management team, Somerhalder is effectively leaving himself without a buffer in navigating both Hollywood deals and legal complexities. Management contracts are often vital in protecting an actor's career trajectory, particularly in times of crisis.
-                    </p>
-
-                    <div class="bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-xl p-6 my-8 border-l-4 border-blue-400">
-                        <blockquote class="text-lg italic text-blue-200">
-                            "When a high-profile actor leaves management during legal turmoil, it sends a message. It suggests distrust, instability, or both. That can make studios and investors nervous, especially when ongoing litigation already creates risk."
-                        </blockquote>
-                        <cite class="text-sm text-blue-300 mt-2 block">— Lisa Carrington, Entertainment Attorney</cite>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-4 gradient-text">Timeline of Events</h3>
-                    <div class="space-y-4 mb-8">
-                        <div class="flex gap-4">
-                            <div class="w-20 text-sm font-semibold text-purple-300">2019–2020</div>
-                            <div class="text-gray-300">Somerhalder expands business presence, co-founding Brother's Bond Bourbon</div>
-                        </div>
-                        <div class="flex gap-4">
-                            <div class="w-20 text-sm font-semibold text-purple-300">2023</div>
-                            <div class="text-gray-300">Early rumblings of contractual disputes and financial disagreements surface</div>
-                        </div>
-                        <div class="flex gap-4">
-                            <div class="w-20 text-sm font-semibold text-purple-300">Early 2024</div>
-                            <div class="text-gray-300">Several lawsuits filed in Los Angeles civil court</div>
-                        </div>
-                        <div class="flex gap-4">
-                            <div class="w-20 text-sm font-semibold text-purple-300">2025</div>
-                            <div class="text-gray-300">Somerhalder formally cuts ties with management</div>
-                        </div>
-                    </div>
-
-                    <div class="bg-gradient-to-r from-green-500/20 to-teal-500/20 rounded-xl p-6 my-8 border-l-4 border-green-400">
-                        <blockquote class="text-lg italic text-green-200">
-                            "The industry has a short memory. If Ian can stabilize his legal situation, he can recover. But without management during active disputes, he risks alienating partners who expect continuity and professionalism."
-                        </blockquote>
-                        <cite class="text-sm text-green-300 mt-2 block">— Martin Delgado, Talent Agent</cite>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-4 gradient-text">What's Next?</h3>
-                    <p class="text-lg leading-relaxed mb-6 text-gray-300">
-                        The actor's immediate challenge will be securing either new management or an interim advisory team capable of handling both career negotiations and legal defense coordination. Without such support, his risk exposure could grow, particularly with child support enforcement and business litigation still active.
-                    </p>
-
-                    <div class="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
-                        <h4 class="text-xl font-bold mb-3 text-white">Conclusion</h4>
-                        <p class="text-gray-300 leading-relaxed">
-                            Ian Somerhalder's departure from his management is more than just a Hollywood shake-up—it is a legal and professional crisis point. With lawsuits still pending, assets frozen, and public scrutiny mounting, the absence of representation could either free him to make bold decisions or leave him dangerously vulnerable.
-                        </p>
+                    <div class="info-card blue">
+                        <h4>Family Court Proceedings</h4>
+                        <p>Child support enforcement case development</p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Article 2: Asset Freeze -->
-    <div id="article2" class="article-page min-h-screen pt-20 hidden">
-        <div class="container mx-auto px-4 py-8 max-w-4xl">
-            <!-- Hero Section -->
-            <div class="text-center mb-12 animate-fade-in">
-                <div class="inline-flex items-center gap-2 bg-red-500/20 text-red-300 px-4 py-2 rounded-full mb-6">
-                    <span class="w-2 h-2 bg-red-400 rounded-full animate-pulse-slow"></span>
-                    Court Order
-                </div>
-                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                    Ian Somerhalder Faces 
-                    <span class="gradient-text">Child Support Crisis</span>
-                    as Court Freezes Assets
-                </h1>
-                <div class="flex flex-wrap justify-center gap-6 text-gray-300 text-sm">
-                    <span class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-purple-400 rounded-full"></span>
-                        Los Angeles Superior Court
-                    </span>
-                    <span class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-purple-400 rounded-full"></span>
-                        $25,000 Arrears
-                    </span>
-                    <span class="flex items-center gap-2">
-                        <span class="w-1 h-1 bg-purple-400 rounded-full"></span>
-                        10-Week Deadline
-                    </span>
-                </div>
-            </div>
+                <h3 class="section-header">Industry Impact</h3>
+                <p>
+                    By stepping away from his management team, Somerhalder is effectively leaving himself without a buffer in navigating both Hollywood deals and legal complexities. Management contracts are often vital in protecting an actor's career trajectory, particularly in times of crisis.
+                </p>
 
-            <!-- Featured Image -->
-            <div class="mb-12 animate-slide-up">
-                <div class="relative rounded-2xl overflow-hidden article-shadow">
-                    <img src="IMG1.jpg" alt="Ian Somerhalder with wife" class="w-full h-96 object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    <div class="absolute bottom-6 left-6 text-white">
-                        <p class="text-sm opacity-80">Ian Somerhalder and his wife at a recent event</p>
+                <div class="quote-block">
+                    <p class="quote-text">
+                        "When a high-profile actor leaves management during legal turmoil, it sends a message. It suggests distrust, instability, or both. That can make studios and investors nervous, especially when ongoing litigation already creates risk."
+                    </p>
+                    <p class="quote-author">— Lisa Carrington, Entertainment Attorney</p>
+                </div>
+
+                <h3 class="section-header">Timeline of Events</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2019–2020</div>
+                        <div class="timeline-content">Somerhalder expands business presence, co-founding Brother's Bond Bourbon</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2023</div>
+                        <div class="timeline-content">Early rumblings of contractual disputes and financial disagreements surface</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Early 2024</div>
+                        <div class="timeline-content">Several lawsuits filed in Los Angeles civil court</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2025</div>
+                        <div class="timeline-content">Somerhalder formally cuts ties with management</div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Article Content -->
-            <div class="prose prose-lg prose-invert max-w-none animate-slide-up">
-                <div class="bg-slate-800/50 rounded-2xl p-8 backdrop-blur-sm border border-slate-700/50 mb-8">
-                    <p class="text-xl leading-relaxed mb-6 text-gray-200">
-                        Actor Ian Somerhalder is now confronting one of the most challenging legal battles of his career. In a recent ruling, the Los Angeles Superior Court ordered Somerhalder to repay $25,000 in overdue child support, invoking strict federal enforcement measures that have left both his personal properties and business ventures under court control.
+                <div class="quote-block">
+                    <p class="quote-text">
+                        "The industry has a short memory. If Ian can stabilize his legal situation, he can recover. But without management during active disputes, he risks alienating partners who expect continuity and professionalism."
                     </p>
+                    <p class="quote-author">— Martin Delgado, Talent Agent</p>
+                </div>
 
-                    <!-- Support Breakdown -->
-                    <div class="bg-red-500/10 border border-red-500/30 rounded-2xl p-6 mb-8">
-                        <h3 class="text-2xl font-bold mb-4 text-red-300">Support Arrears Breakdown</h3>
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="bg-slate-700/50 rounded-xl p-4">
-                                <div class="text-3xl font-bold text-white mb-2">$12,000</div>
-                                <div class="text-red-300">Child 1</div>
-                            </div>
-                            <div class="bg-slate-700/50 rounded-xl p-4">
-                                <div class="text-3xl font-bold text-white mb-2">$13,000</div>
-                                <div class="text-red-300">Child 2</div>
-                            </div>
-                        </div>
-                        <div class="mt-6 pt-6 border-t border-red-500/30">
-                            <div class="text-4xl font-bold text-red-400">$25,000</div>
-                            <div class="text-red-300">Total Due</div>
-                        </div>
-                    </div>
+                <h3 class="section-header">What's Next?</h3>
+                <p>
+                    The actor's immediate challenge will be securing either new management or an interim advisory team capable of handling both career negotiations and legal defense coordination. Without such support, his risk exposure could grow, particularly with child support enforcement and business litigation still active.
+                </p>
 
-                    <h3 class="text-2xl font-bold mb-4 gradient-text">Federal Enforcement Authority</h3>
-                    <p class="text-lg leading-relaxed mb-6 text-gray-300">
-                        The court's actions fall under 42 U.S.C. § 666, a federal statute requiring states to implement uniform child support enforcement measures.
+                <div class="conclusion">
+                    <h4>Conclusion</h4>
+                    <p>
+                        Ian Somerhalder's departure from his management is more than just a Hollywood shake-up—it is a legal and professional crisis point. With lawsuits still pending, assets frozen, and public scrutiny mounting, the absence of representation could either free him to make bold decisions or leave him dangerously vulnerable.
                     </p>
-
-                    <div class="grid md:grid-cols-2 gap-4 mb-8">
-                        <div class="bg-purple-500/10 border border-purple-500/30 rounded-xl p-4">
-                            <h4 class="font-semibold text-purple-300 mb-2">Property Liens</h4>
-                            <p class="text-sm text-gray-300">Legal claims on real estate</p>
-                        </div>
-                        <div class="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
-                            <h4 class="font-semibold text-blue-300 mb-2">Bank Freezes</h4>
-                            <p class="text-sm text-gray-300">Restricted access to accounts</p>
-                        </div>
-                        <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4">
-                            <h4 class="font-semibold text-yellow-300 mb-2">Business Seizure</h4>
-                            <p class="text-sm text-gray-300">Frozen equity and partnerships</p>
-                        </div>
-                        <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4">
-                            <h4 class="font-semibold text-red-300 mb-2">Contempt Proceedings</h4>
-                            <p class="text-sm text-gray-300">Potential jail time</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-xl p-6 my-8 border-l-4 border-purple-400">
-                        <blockquote class="text-lg italic text-purple-200">
-                            "The statute is designed to eliminate loopholes. If a parent fails to comply, the law gives states broad authority to enforce payment through almost any means necessary—real estate, business income, and even personal freedoms can be restricted."
-                        </blockquote>
-                        <cite class="text-sm text-purple-300 mt-2 block">— Rebecca Langford, J.D., Legal Analyst</cite>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-4 gradient-text">Frozen Assets and Holdings</h3>
-                    <div class="space-y-4 mb-8">
-                        <div class="bg-slate-700/30 rounded-xl p-4 border-l-4 border-blue-400">
-                            <h4 class="font-semibold text-blue-300 mb-2">Real Estate Properties</h4>
-                            <ul class="text-gray-300 space-y-1">
-                                <li>• Venice Residence (sold 2020, contractual interests remain)</li>
-                                <li>• Santa Monica Property ($897K, acquired 2006)</li>
-                                <li>• Farm Estate Outside Los Angeles (current residence)</li>
-                            </ul>
-                        </div>
-                        <div class="bg-slate-700/30 rounded-xl p-4 border-l-4 border-green-400">
-                            <h4 class="font-semibold text-green-300 mb-2">Business Interests</h4>
-                            <ul class="text-gray-300 space-y-1">
-                                <li>• Brother's Bond Bourbon (co-founded with Paul Wesley)</li>
-                                <li>• Built of Barnwood (reclaimed wood furniture company)</li>
-                                <li>• Various bank accounts (joint and business-related)</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-4 gradient-text">10-Week Ultimatum</h3>
-                    <div class="bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-2xl p-6 mb-8 border border-red-500/30">
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="text-center">
-                                <div class="text-3xl font-bold text-red-400 mb-2">Comply</div>
-                                <div class="text-gray-300">Pay $25,000 within deadline</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-3xl font-bold text-red-400 mb-2">Consequences</div>
-                                <div class="text-gray-300">
-                                    <div>• Debt doubles to $50,000</div>
-                                    <div>• Potential incarceration</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl p-6 my-8 border-l-4 border-yellow-400">
-                        <blockquote class="text-lg italic text-yellow-200">
-                            "The court has made it clear that this is not negotiable. He must either meet the deadline or face escalating consequences. For a public figure, the risk is twofold: financial penalties and the reputational damage of potential incarceration."
-                        </blockquote>
-                        <cite class="text-sm text-yellow-300 mt-2 block">— Daniel Morales, Family Law Attorney</cite>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-4 gradient-text">Financial Reality Check</h3>
-                    <p class="text-lg leading-relaxed mb-6 text-gray-300">
-                        While Somerhalder's net worth is estimated at $12–14 million, much of it is tied up in non-liquid assets such as real estate and long-term business ventures. The enforcement raises questions about the stability of Brother's Bond Bourbon, which has grown into a recognizable brand.
-                    </p>
-
-                    <div class="bg-gradient-to-r from-green-500/20 to-teal-500/20 rounded-xl p-6 my-8 border-l-4 border-green-400">
-                        <blockquote class="text-lg italic text-green-200">
-                            "High-net-worth individuals frequently face cash flow challenges. Their wealth is tied up in property and businesses. When accounts are frozen, even a relatively small obligation like $25,000 can become an immediate crisis."
-                        </blockquote>
-                        <cite class="text-sm text-green-300 mt-2 block">— Marcia Evans, Financial Advisor</cite>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-4 gradient-text">Timeline of Crisis</h3>
-                    <div class="space-y-4 mb-8">
-                        <div class="flex gap-4 items-center">
-                            <div class="w-24 text-sm font-semibold text-purple-300">Sep 2025</div>
-                            <div class="flex-1 bg-slate-700/30 rounded-lg p-3 text-gray-300">
-                                Court invokes 42 U.S.C. § 666, freezing assets and issuing 10-week repayment deadline
-                            </div>
-                        </div>
-                    </div>
-
-                    <h3 class="text-2xl font-bold mb-4 gradient-text">Industry Impact</h3>
-                    <p class="text-lg leading-relaxed mb-6 text-gray-300">
-                        The case highlights the often-overlooked financial scrutiny faced by celebrities undergoing divorce. With Somerhalder's shares under lien, future decisions about Brother's Bond Bourbon could be delayed or restricted until the debt is cleared.
-                    </p>
-
-                    <div class="bg-slate-700/50 rounded-xl p-6 border border-slate-600">
-                        <h4 class="text-xl font-bold mb-3 text-white">The Crossroads</h4>
-                        <p class="text-gray-300 leading-relaxed mb-4">
-                            Ian Somerhalder's situation serves as a cautionary tale about the far-reaching consequences of child support enforcement in the United States. With 10 weeks to repay $25,000, the actor stands at a crossroads: secure compliance and regain access to his assets, or face doubled debt and possible jail time.
-                        </p>
-                        <div class="grid md:grid-cols-2 gap-4 mt-4">
-                            <div class="bg-green-500/10 border border-green-500/30 rounded-lg p-3">
-                                <div class="font-semibold text-green-300">If Resolved Quickly</div>
-                                <div class="text-sm text-gray-300">Temporary setback, career continues</div>
-                            </div>
-                            <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
-                                <div class="font-semibold text-red-300">If Unresolved</div>
-                                <div class="text-sm text-gray-300">Business ventures, reputation, and freedom at risk</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="bg-slate-900/50 backdrop-blur-sm border-t border-slate-700/50 py-8 mt-16">
-        <div class="container mx-auto px-4 text-center">
-            <div class="gradient-text text-xl font-bold mb-4">Entertainment Legal News</div>
-            <p class="text-gray-400 text-sm">
-                Breaking coverage of Hollywood legal developments • September 2025
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-logo">Entertainment Legal News</div>
+            <p class="footer-text">
+                Breaking coverage of Hollywood legal developments • 14th September 2025
             </p>
         </div>
     </footer>
@@ -401,19 +780,17 @@
             
             // Update navigation
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-white/20', 'shadow-lg');
-                btn.classList.add('bg-white/10');
+                btn.classList.remove('active');
             });
             
-            document.getElementById('nav-article' + articleNum).classList.remove('bg-white/10');
-            document.getElementById('nav-article' + articleNum).classList.add('bg-white/20', 'shadow-lg');
+            document.getElementById('nav-article' + articleNum).classList.add('active');
             
             // Smooth scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });
             
             // Re-trigger animations
             setTimeout(() => {
-                const elements = document.querySelectorAll('.animate-fade-in, .animate-slide-up');
+                const elements = document.querySelectorAll('.hero, .featured-image, .article-content');
                 elements.forEach(el => {
                     el.style.animation = 'none';
                     el.offsetHeight; // Trigger reflow
@@ -429,10 +806,11 @@
             // Add smooth scrolling and parallax effects
             window.addEventListener('scroll', function() {
                 const scrolled = window.pageYOffset;
-                const parallax = document.querySelectorAll('.article-shadow img');
+                const parallax = document.querySelectorAll('.image-container img');
                 
                 parallax.forEach(img => {
-                    if (img.getBoundingClientRect().top < window.innerHeight && img.getBoundingClientRect().bottom > 0) {
+                    const rect = img.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
                         img.style.transform = `translateY(${scrolled * 0.1}px)`;
                     }
                 });
@@ -447,13 +825,17 @@
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-fade-in');
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
                     }
                 });
             }, observerOptions);
             
             // Observe all animatable elements
-            document.querySelectorAll('.prose > div, .prose h3, .prose p').forEach(el => {
+            document.querySelectorAll('.info-card, .quote-block, .timeline-item').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'all 0.6s ease';
                 observer.observe(el);
             });
         });
@@ -466,27 +848,230 @@
 
         // Add touch/swipe support for mobile
         let startX = null;
+        let startY = null;
+        
         document.addEventListener('touchstart', function(e) {
             startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
         });
         
         document.addEventListener('touchend', function(e) {
-            if (!startX) return;
+            if (!startX || !startY) return;
             
             const endX = e.changedTouches[0].clientX;
-            const diff = startX - endX;
+            const endY = e.changedTouches[0].clientY;
             
-            if (Math.abs(diff) > 50) { // Minimum swipe distance
+            const diffX = startX - endX;
+            const diffY = startY - endY;
+            
+            // Only trigger if horizontal swipe is greater than vertical
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
                 const currentArticle = document.querySelector('.article-page:not(.hidden)').id;
-                if (diff > 0 && currentArticle === 'article1') {
+                if (diffX > 0 && currentArticle === 'article1') {
                     showArticle(2); // Swipe left to go to article 2
-                } else if (diff < 0 && currentArticle === 'article2') {
+                } else if (diffX < 0 && currentArticle === 'article2') {
                     showArticle(1); // Swipe right to go to article 1
                 }
             }
             
             startX = null;
+            startY = null;
+        });
+
+        // Add hover effects for cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.info-card, .support-item, .outcome-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.5s ease';
+                document.body.style.opacity = '1';
+            }, 100);
         });
     </script>
 </body>
 </html>
+
+    <!-- Article 2: Asset Freeze -->
+    <div id="article2" class="article-page hidden">
+        <div class="container">
+            <!-- Hero Section -->
+            <div class="hero">
+                <div class="breaking-badge">
+                    <span class="pulse-dot"></span>
+                    Court Order
+                </div>
+                <h1>
+                    Ian Somerhalder Faces 
+                    <span class="gradient-text">Child Support Crisis</span>
+                    as Court Freezes Assets and Business Holdings
+                </h1>
+                <div class="hero-meta">
+                    <span class="meta-item">
+                        <span class="meta-dot"></span>
+                        Los Angeles Superior Court
+                    </span>
+                    <span class="meta-item">
+                        <span class="meta-dot"></span>
+                        $32,180 Arrears
+                    </span>
+                    <span class="meta-item">
+                        <span class="meta-dot"></span>
+                        Date: 14th september 2025
+                    </span>
+                </div>
+            </div>
+
+            <!-- Featured Image -->
+            <div class="featured-image">
+                <div class="image-container">
+                    <img src="./IMG1.JPG" alt="Ian Somerhalder with wife">
+                    <div class="image-overlay">
+                        <p class="image-caption">Ian Somerhalder and his wife at a recent event</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Article Content -->
+            <div class="article-content">
+                <p class="lead-paragraph">
+                    Actor Ian Somerhalder, widely known for his role in The Vampire Diaries, is facing one of the most difficult legal challenges of his career. The Los Angeles Superior Court has ordered him to repay $32,180 in overdue child support, triggering strict federal enforcement actions that have placed his properties and business ventures under court control.
+                </p>
+
+                <p>
+                    Although the amount may seem relatively small compared to Hollywood standards, the court took swift action after Somerhalder delayed payments, invoking aggressive measures under 42 U.S.C. § 666, a federal statute that allows states to enforce child support through property liens, bank freezes, business seizures, and even contempt proceedings that can lead to jail time.
+                </p>
+
+                <!-- Support Breakdown -->
+                <div class="support-breakdown">
+                    <h3 class="section-header">Support Arrears Breakdown</h3>
+                    <div class="support-grid">
+                        <div class="support-item">
+                            <div class="support-amount">$16,000</div>
+                            <div class="support-label">Child 1</div>
+                        </div>
+                        <div class="support-item">
+                            <div class="support-amount">$16,180</div>
+                            <div class="support-label">Child 2</div>
+                        </div>
+                    </div>
+                    <div class="support-total">
+                        <div class="amount">$32,180</div>
+                        <div class="label">Total Due</div>
+                    </div>
+                </div>
+
+                <h3 class="section-header">Assets and Businesses Frozen</h3>
+                <p>
+                    The ruling has affected both past and present assets linked to the actor, including:
+                </p>
+
+                <div class="info-grid">
+                    <div class="info-card blue">
+                        <h4>Venice Residence</h4>
+                        <p>Purchased in 2015 for $2.85M, sold in 2020 but still listed due to contractual interests</p>
+                    </div>
+                    <div class="info-card blue">
+                        <h4>Santa Monica Property</h4>
+                        <p>Early California holding, acquired in 2006 for $897K</p>
+                    </div>
+                    <div class="info-card blue">
+                        <h4>Farm Estate</h4>
+                        <p>Current home outside Los Angeles, known for sustainable operations</p>
+                    </div>
+                    <div class="info-card green">
+                        <h4>Brother's Bond Bourbon</h4>
+                        <p>Bourbon company co-founded with Paul Wesley; equity shares frozen</p>
+                    </div>
+                    <div class="info-card green">
+                        <h4>Built of Barnwood</h4>
+                        <p>Reclaimed wood furniture company launched with his brother</p>
+                    </div>
+                    <div class="info-card yellow">
+                        <h4>Bank Accounts</h4>
+                        <p>Both joint and business accounts frozen until repayment</p>
+                    </div>
+                </div>
+
+                <p>
+                    The freeze has made it even harder for Somerhalder to raise funds, since much of his wealth is tied up in real estate and long-term ventures.
+                </p>
+
+                <h3 class="section-header">Strict Deadline and Consequences</h3>
+                <p>
+                    The presiding judge gave him a 10-week deadline to clear the debt. If he fails, the penalties will escalate:
+                </p>
+
+                <div class="ultimatum">
+                    <div class="ultimatum-grid">
+                        <div class="ultimatum-option">
+                            <h4>Debt Doubles</h4>
+                            <div class="ultimatum-details">
+                                The $32,180 will increase to $64,360
+                            </div>
+                        </div>
+                        <div class="ultimatum-option">
+                            <h4>Incarceration</h4>
+                            <div class="ultimatum-details">
+                                Possible jail time for contempt of court
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p>
+                    Legal experts warn that this is not negotiable.
+                </p>
+
+                <div class="quote-block">
+                    <p class="quote-text">
+                        "The court has drawn a clear line. Either he pays within the deadline, or he faces doubled debt and possible jail time. For a public figure, that also means a significant blow to reputation."
+                    </p>
+                    <p class="quote-author">— Daniel Morales, Family Law Attorney</p>
+                </div>
+
+                <div class="quote-block">
+                    <p class="quote-text">
+                        "Wealth doesn't always equal liquidity. When accounts are frozen, even a relatively modest obligation like $32,180 can quickly spiral into crisis."
+                    </p>
+                    <p class="quote-author">— Marcia Evans, Financial Advisor</p>
+                </div>
+
+                <h3 class="section-header">Public Reaction and Final Warning</h3>
+                <p>
+                    The enforcement has already sparked conversations across Hollywood. Many believe this could be a turning point in Somerhalder's career — if resolved quickly, it may be dismissed as a temporary setback. If not, the fallout could damage his businesses, professional reputation, and personal freedom.
+                </p>
+
+                <p>
+                    At this stage, nothing remains hanging on Mr. Somerhalder after this ruling — the public is aware, and the process is considered both fair and legal. Many in the industry are saying this must be the last time such a case comes up for him.
+                </p>
+
+                <div class="conclusion">
+                    <h4>The Crossroads</h4>
+                    <p>
+                        With just 10 weeks to settle $32,180, Ian Somerhalder is at a crossroads: comply and regain control of his assets, or face doubled debt and the possibility of jail. Hollywood and the business world will be watching closely to see how the actor navigates this crisis.
+                    </p>
+                    <div class="conclusion-grid">
+                        <div class="outcome-card positive">
+                            <div class="outcome-title">If Resolved Quickly</div>
+                            <div class="outcome-text">Dismissed as temporary setback</div>
+                        </div>
+                        <div class="outcome-card negative">
+                            <div class="outcome-title">If Unresolved</div>
+                            <div class="outcome-text">Damage to businesses, reputation, and freedom</div>
+                        </div>
+                    </div>
+                </div>
